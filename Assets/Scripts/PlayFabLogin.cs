@@ -1,6 +1,7 @@
 ﻿using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayFabLogin : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class PlayFabLogin : MonoBehaviour
     {
         Debug.Log("Congratulations, you made your first successful API call!");
         // GetTitleData();
+        // GetUserData();
+        // UpdateUserData();
     }
 
     private void OnLoginFailure(PlayFabError error)
@@ -70,5 +73,54 @@ public class PlayFabLogin : MonoBehaviour
         public string Name { get; set; }
         public int Rank { get; set; }
         public int Rate { get; set; }
+    }
+
+    /*
+    #########################
+    UserData(PlayerData)
+    #########################
+    */
+    public static void GetUserData()
+    {
+        var request = new GetUserDataRequest();
+        PlayFabClientAPI.GetUserData(request, OnSuccess, OnError);
+
+        void OnSuccess(GetUserDataResult result)
+        {
+            Debug.Log("GetUserData: Success!");
+            Debug.Log($"My name is {result.Data["Name"].Value}");
+        }
+
+        void OnError(PlayFabError error)
+        {
+            Debug.Log("GetUserData: Fail...");
+            Debug.Log(error.GenerateErrorReport());
+        }
+    }
+
+    public static void UpdateUserData()
+    {
+        var request = new UpdateUserDataRequest()
+        {
+            Data = new Dictionary<string, string>
+            {
+                { "Name", "Jim" },
+                //{ "Job", "Engineer" }
+            }
+        };
+
+        PlayFabClientAPI.UpdateUserData(request, OnSuccess, OnError);
+
+        void OnSuccess(UpdateUserDataResult result)
+        {
+            Debug.Log("UpdateUserData: Success!");
+            GetUserData();
+        }
+
+        void OnError(PlayFabError error)
+        {
+            Debug.Log("UpdateUserData: Fail...");
+            Debug.Log(error.GenerateErrorReport());
+        }
     }
 }
