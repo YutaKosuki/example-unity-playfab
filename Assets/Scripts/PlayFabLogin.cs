@@ -17,8 +17,20 @@ public class PlayFabLogin : MonoBehaviour
         if (string.IsNullOrEmpty(PlayFabSettings.staticSettings.TitleId)){
             PlayFabSettings.staticSettings.TitleId = "XXXX"; // Please change this value to your own titleId from PlayFab Game Manager
         }
-        var request = new LoginWithCustomIDRequest { CustomId = "GettingStartedGuide", CreateAccount = true};
+        var customId = this.GetUUID();
+        var request = new LoginWithCustomIDRequest { CustomId = customId, CreateAccount = true};
         PlayFabClientAPI.LoginWithCustomID(request, OnLoginSuccess, OnLoginFailure);
+    }
+
+    private string GetUUID() {
+        // リスクはあるが端末ごとの固有IDを取得する
+        //return SystemInfo.deviceUniqueIdentifier;
+
+        // ユニークなIDを生成する
+        //var guid = System.Guid.NewGuid();
+        //return guid.ToString();
+
+        return "GettingStartedGuide";
     }
 
     private void OnLoginSuccess(LoginResult result)
