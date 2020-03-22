@@ -23,7 +23,7 @@ public class SendRankingScore : MonoBehaviour
             Statistics = new List<StatisticUpdate>{ statisticUpdate },
         };
 
-        Debug.Log("スコアの更新開始");
+        Debug.Log($"スコアの更新開始, score:{int.Parse( _scoreText.text)}");
         PlayFabClientAPI.UpdatePlayerStatistics(request, OnUpdatePlayerStatisticsSuccess, OnUpdatePlayerStatisticsFailure);
     }
 
